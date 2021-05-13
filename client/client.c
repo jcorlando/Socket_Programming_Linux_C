@@ -5,16 +5,26 @@
 #include <string.h>	//strlen
 #include <arpa/inet.h>	//inet_addr
 
-int main()
+int main(int argc, char *argv[])
 {
+	
+	if (argc < 3)
+  {
+		fprintf(stderr,"Usage: %s [hostname] [port]\n", argv[0]);
+    return(1);
+  }
+
+	char *ipaddress = argv[1];
+	int port_number = atoi(argv[2]);
+
 	int sock, mlen;
 	struct sockaddr_in server;
 	char message[40], buf[80];
 	printf("\nEnter a string to send to a server and be reversed: ");
 	fgets(message, sizeof message, stdin);
-	// removes newline character from string
+	// removes newline character from end of string
 	message[strcspn(message, "\n")] = 0;
-	// removes newline character from string
+	// removes newline character from end of string
 	printf("\nThe orginal string is  : %s\n", message);
 	
 	//Create socket
@@ -24,9 +34,9 @@ int main()
 		printf("Could not create socket");
 	}
 	
-	server.sin_addr.s_addr = inet_addr("130.191.166.3");
+	server.sin_addr.s_addr = inet_addr( ipaddress );
 	server.sin_family = AF_INET;
-	server.sin_port = htons( 5011 );
+	server.sin_port = htons( port_number );
 
 	//Connect to remote server
 	if (connect(sock , (struct sockaddr *)&server , sizeof(server)) < 0)

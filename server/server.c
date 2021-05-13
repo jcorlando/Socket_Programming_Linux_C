@@ -8,7 +8,7 @@
 
 int main()
 {
-  int sock, clientsock, mlen, addrsize, msgct, chc, chct;
+  int sock, clientsock, mlen, addrsize;
 	struct sockaddr_in addr;
 	char ch, buf[80];
 	
@@ -56,7 +56,7 @@ int main()
 		exit(-1);
 	}
 	
-	printf("\nconnection made with client %s\n", inet_ntoa(addr.sin_addr));
+	printf("\nconnection made with client %s\n\n", inet_ntoa(addr.sin_addr));
 
 
 
@@ -66,7 +66,7 @@ int main()
 	
 	mlen = recv(clientsock, buf, 80, 0);
 
-	printf("The Message is : %.*s\n", mlen, buf);
+	printf("The Message is : %.*s\n\n", mlen, buf);
 	
 	
 	// Reverse String
@@ -81,19 +81,18 @@ int main()
 		RevStr[j++] = buf[i];
 	}
 	RevStr[i] = '\0';
-	printf("The reversed string is : %s\n", RevStr);
+	printf("The reversed string is : %s\n\n", RevStr);
   // Reverse String
 
-
-	//  send(clientsock, "Got your message", 17, 0);
 	if( send(clientsock, RevStr, strlen(RevStr), 0) < 0)
 	{
 		perror("Reverse String Send Failed");
 		exit(-1);
 	}
-
-
-
+	else
+	{
+		printf("Reverse String Successfully Sent Back to Client\n\n");
+	}
 
 	printf("Server - all messages read - connection being closed\n\n");
 
